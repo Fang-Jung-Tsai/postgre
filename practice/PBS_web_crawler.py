@@ -14,13 +14,13 @@ from PBS_update_df import update_df
 # create logger
 logger = logging.getLogger('web_test_crawler')
 logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler("/home/fj/postgre/practice/log/web_test_crawler.log")
+fh = logging.FileHandler("~/postgre/practice/log/web_test_crawler.log")
 fh.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 fh.setFormatter(formatter)
 logger.addHandler(fh)
 
-lastestData_pth = "/home/fj/postgre/practice/lastestData.csv"
+lastestData_pth = "~/postgre/practice/lastestData.csv"
 
 url = 'https://data.moi.gov.tw/MoiOD/System/DownloadFile.aspx?DATA=36384FA8-FACF-432E-BB5B-5F015E7BC1BE'
 

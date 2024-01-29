@@ -5,7 +5,7 @@ import numpy as np
 import datetime
 import time
 import sys
-my_package_path = '/home/fj/postgre/zoo'
+my_package_path = '~/postgre/zoo'
 # Add the path to sys.path
 sys.path.append(my_package_path)
 
@@ -21,7 +21,7 @@ from argparse import ArgumentParser
 logger = logging.getLogger('road_test_crawler')
 logger.setLevel(logging.DEBUG)
 # create console handler and set level to debug
-fh = logging.FileHandler("/home/fj/postgre/practice/log/road_test_crawler.log")
+fh = logging.FileHandler("~/postgre/practice/log/road_test_crawler.log")
 fh.setLevel(logging.DEBUG)
 # create formatter
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -34,7 +34,7 @@ logger.addHandler(fh)
 logger2 = logging.getLogger('road_test_crawler')
 logger2.setLevel(logging.DEBUG)
 # create console handler and set level to debug
-fh2 = logging.FileHandler("/home/fj/postgre/practice/log/road_missing.log")
+fh2 = logging.FileHandler("~/postgre/practice/log/road_missing.log")
 fh2.setLevel(logging.DEBUG)
 # create formatter
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -174,7 +174,7 @@ def job(df):
 
 if __name__ =='__main__':
 
-    lastestData_pth = '/home/fj/postgre/practice/lastestData.csv'
+    lastestData_pth = '~/postgre/practice/lastestData.csv'
     df = pd.read_csv(lastestData_pth) #.iloc[31000:31500]
     # df.loc[31000:31500, "upload"] = True
     df = df.reset_index(drop=True) #.iloc[29000:]
