@@ -1,0 +1,8 @@
+*
+!.gitignore
+!users
+!users/*
+!users.csv
+!users_groups.csv
+!project.qgz
+!project_no_cas.qgz

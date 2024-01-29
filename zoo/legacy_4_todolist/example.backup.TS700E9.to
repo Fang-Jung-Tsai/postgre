@@ -1,0 +1,71 @@
+#!/usr/bin/bash
+###################################################################################################
+# ${var%Pattern} Remove from $var the shortest part of $Pattern that matches the back end of $var. 
+# ${var#Pattern} Remove from $var the shortest part of $Pattern that matches the front end of $var.
+###################################################################################################
+# 2021/08/18 覺得可以再做得更好，但是時間、資源、精力都有限。
+# 
+# 所以先求有再求好。後續再以實際遇到的狀態，慢慢來修正與累積人生! 今天就先這樣吧。
+homedir="/cygdrive/c/Users/jitin/Desktop"
+#
+#directory for raid6_d
+#
+respository="${homedir}/raid6_d/backup_ASUS-TS700E9"
+history_dir="${homedir}/raid6_d/backup_ASUS-TS700E9_history"
+#items list for raid6_d
+raid6_list=(\
+      		"${homedir}/crying_freeman/zoo.*","${respository}/crying_freeman"\
+      		"${homedir}/crying_freeman/pylily_family","${respository}/crying_freeman"\
+			"${homedir}/crying_freeman/ctao_data","${respository}/crying_freeman"\
+      		"${homedir}/crying_freeman/data_[nw]*","${respository}/crying_freeman"\
+      		"${homedir}/crying_freeman/NCREE_GIS","${respository}/crying_freeman"\
+      		"${homedir}/crying_freeman/OneDrive","${respository}/crying_freeman"\
+        )
+
+#options for /usr/bin/rsync to raid6
+raid6_argu="-avz --delete --backup --backup-dir=${history_dir}"
+###################################################################################################
+###################################################################################################
+
+
+case $1 in
+	"raid6_d")
+		for b in ${raid6_list[@]} ;
+			do
+				src=${b%,*};
+				des=${b#*,};
+				/usr/bin/echo -e "rsync $raid6_argu";
+				/usr/bin/echo -e "rsync ${src} TO ${des}";
+				/usr/bin/rsync $raid6_argu ${src} ${des};
+				/usr/bin/echo -e "......End\n";
+			done
+	;;
+
+	"portable_d")  
+		/usr/bin/rsync -avz --delete ${respository} ${homedir}/portable_d/;
+	;;
+
+	"homework_d")
+		/usr/bin/rsync -avz --delete "${homedir}/crying_freeman/pylily_family" /cygdrive/d/;
+		/usr/bin/rsync -avz --delete "${homedir}/crying_freeman/zoo.pylily.ctao2.factory" /cygdrive/d/;
+	;;
+
+	"Artemis5")  
+		/usr/bin/echo -e 'Connect to Artemis .......';
+		#segm 1
+		remote_host="laluna@192.192.138.139:";
+		remote_respository="laluna@192.192.138.139:/mnt/autumn";
+		remote_history_dir="/mnt/autumn/backup_ASUS-TS700E9_history";
+		operation="-avz --delete --backup --backup-dir=${remote_history_dir}";
+		#segm 2
+		/usr/bin/echo -e "rsync ${operation} ${respository} ${remote_respository}";
+		/usr/bin/rsync ${operation} ${respository} ${remote_respository};
+	;;
+
+	*) 	
+	#segm
+		/usr/bin/echo -e 'backup_to raid6_d or portable_d';
+	;;
+esac
+
+###################################################################################################
