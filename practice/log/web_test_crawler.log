@@ -2524,3 +2524,11 @@
 2024-02-05 01:45:03,564 - web_test_crawler - INFO - [Crawl] Succeed to crawl PBS data
 2024-02-05 01:45:03,662 - web_test_crawler - INFO - [Crawl] no new data
 2024-02-05 01:45:03,662 - web_test_crawler - INFO - [Crawl] no new data
+2024-02-05 02:00:03,820 - web_test_crawler - INFO - [Crawl] Succeed to crawl PBS data
+2024-02-05 02:00:03,820 - web_test_crawler - INFO - [Crawl] Succeed to crawl PBS data
+2024-02-05 02:00:03,937 - web_test_crawler - INFO - [Crawl] no new data
+2024-02-05 02:00:03,937 - web_test_crawler - INFO - [Crawl] no new data
+2024-02-05 02:15:07,724 - web_test_crawler - INFO - [Crawl] Succeed to crawl PBS data
+2024-02-05 02:15:07,724 - web_test_crawler - INFO - [Crawl] Succeed to crawl PBS data
+2024-02-05 02:15:07,853 - web_test_crawler - INFO - [Crawl] upload 1 data to postgre
+2024-02-05 02:15:07,853 - web_test_crawler - INFO - [Crawl] upload 1 data to postgre
