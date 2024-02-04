@@ -8,7 +8,7 @@ from matplotlib.font_manager import fontManager
 from argparse import ArgumentParser
 
 import sys
-my_package_path = '/home/fj/postgre/zoo'
+my_package_path = os.path.expanduser("~/postgre/zoo")
 # Add the path to sys.path
 sys.path.append(my_package_path)
 
@@ -68,7 +68,7 @@ def count_road_type(filtered_df, key='areaname', condition=''):
 
 def plot_stats_table(filtered_df:pd.DataFrame, begindate=datetime.now(), enddate=datetime.now()):
 
-    fontManager.addfont('/home/fj/postgre/practice/style/taipei_sans_tc_beta.ttf')
+    fontManager.addfont(os.path.expanduser("~/postgre/practice/style/taipei_sans_tc_beta.ttf"))
     mpl.rc('font', family='Taipei Sans TC Beta')
 
     row_lbls = ['全台', '台北市',

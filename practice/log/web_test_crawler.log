@@ -2520,3 +2520,7 @@
 2024-02-05 01:30:03,350 - web_test_crawler - INFO - [Crawl] Succeed to crawl PBS data
 2024-02-05 01:30:03,473 - web_test_crawler - INFO - [Crawl] no new data
 2024-02-05 01:30:03,473 - web_test_crawler - INFO - [Crawl] no new data
+2024-02-05 01:45:03,564 - web_test_crawler - INFO - [Crawl] Succeed to crawl PBS data
+2024-02-05 01:45:03,564 - web_test_crawler - INFO - [Crawl] Succeed to crawl PBS data
+2024-02-05 01:45:03,662 - web_test_crawler - INFO - [Crawl] no new data
+2024-02-05 01:45:03,662 - web_test_crawler - INFO - [Crawl] no new data

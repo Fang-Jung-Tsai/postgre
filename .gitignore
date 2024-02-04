@@ -1,3 +1,7 @@
 # ignore all files in any directory named venv
 venv/
-gis/
+practice/log/
+practice/style/
+practice/figures/
+practice/__pycache__/
+practice/lastestData.csv
