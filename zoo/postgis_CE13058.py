@@ -160,7 +160,7 @@ class postgis_CE13058:
                 cursor.execute(query)
                 update_rows = cursor.rowcount
             
-            postgis.conn.commit()
+            self.conn.commit()
 
             return update_rows
 
