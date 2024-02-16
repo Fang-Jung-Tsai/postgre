@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import os
 import sys
-my_package_path =  os.path.expanduser("~//home/fj/postgre/zoo")
+my_package_path =  os.path.expanduser("~/postgre/zoo")
 # Add the path to sys.path
 sys.path.append(my_package_path)
 
