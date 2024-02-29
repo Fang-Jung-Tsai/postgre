@@ -17,41 +17,11 @@ import feedparser
 from postgis_CE13058 import postgis_CE13058
 
 class postgis_handler():
-    def __init__(self) -> None:
+    def __init__(self, history_table, key_table) -> None:
         self.db = postgis_CE13058()
-        self.history_table = ""
-        self.key_table = ""
-        self.key_tmp_table = ""
-
-    def add(self, df, table):
-
-        try:
-            self.db.append_data(df, table)
-            return True
-            
-        except Exception as e:
-            return e
-
-    def update_key(self, table, df):
-
-        try:
-            tmp_df = pd.DataFrame(tmp_df)
-            self.db.append_data(tmp_df, self.key_table)
-            # logger.info(f"[update_key] {df.iloc[0]['uid']}")
-
-        except Exception as e:
-            return e
-            # logger.error(f"[update_key] {e} {tmp_df}")
-
-    def add_key(self, df):
-
-        try:
-            self.db.append_data(df, self.key_table)
-            # logger.info(f"[add_key] {df.iloc[0]['uid']}")
-
-        except Exception as e:
-            return e
-            # logger.error(f"[add_key] {e} {tmp_df}")  
+        self.history_table = history_table
+        self.key_table = key_table
+        self.key_tmp_table = key_table + "_tmp"
 
 
 class webCrawler():
@@ -62,9 +32,11 @@ class webCrawler():
 
         self.log_fn = log_fn
         self.df = pd.DataFrame()
-        self.postgis = postgis_handler()
-
+        
         self.set_logger()
+
+    def set_postgis(self, history_table, key_table):
+        self.postgis = postgis_handler(history_table, key_table)
 
     def update_df(self, df1, df2):
 
@@ -100,9 +72,7 @@ class PBSCrawler(webCrawler):
                  history_tb_name="data_rosa_fj_pbs",
                  key_tb_name="data_rosa_fj_pbs_key"):
         super.__init__(url, output_fn, log_fn)
-        self.postgis.history_table = history_tb_name
-        self.postgis.key_table = key_tb_name
-        self.postgis.key_tmp_table = key_tb_name + "_tmp"
+        self.set_postgis(history_tb_name, key_tb_name)
 
     def crawl_data(self):
         # it is neccessary to use Taiwan IP to crawl data
