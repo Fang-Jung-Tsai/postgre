@@ -56,6 +56,39 @@ class webCrawler():
 
         return final_df
     
+    def get_key_df(self, df):
+        df = df[["uid", "hash", "datetime", "moddttm", "downloaddttm"]]
+
+        tmp_df = {
+            "uid": df.iloc[0]["uid"],
+            "datetime" : df.iloc[0]["datetime"],
+            "moddttm": [df["moddttm"].drop_duplicates().tolist()],
+            "hash": [df["hash"].drop_duplicates().tolist()],
+            "downloaddttm": df.iloc[0]["downloaddttm"]
+        }
+
+        return pd.DataFrame(tmp_df)
+
+    def update_key(self):
+        tmp_df = self.postgis.read_data(self.postgis.key_tmp_table)
+
+        if len(tmp_df):
+            try:
+                query = f"""
+                    UPDATE {self.postgis.key_table}
+                    SET moddttm = {self.postgis.key_tmp_table}.moddttm,
+                        hash = {self.postgis.key_tmp_table}.hash,
+                        downloaddttm = {self.postgis.key_tmp_table}.downloaddttm
+                    FROM {self.postgis.key_tmp_table}
+                    WHERE {self.postgis.key_table}.uid = {self.postgis.key_tmp_table}.uid;
+                """
+                count_key += self.postgis.update_data(query)
+                self.logger.info(f'Update {count_key} data into key table')
+                self.postgis.drop_table(self.postgis.key_tmp_table)
+            
+            except Exception as e:
+                self.logger.error(f'[Update tmp_df] {e} {tmp_df}')
+
     
     def set_logger(self):
         self.logger = logging.getLogger("web_crawler")
@@ -146,24 +179,7 @@ class PBSCrawler(webCrawler):
             elif uploaded_num >= 1 and non_uploaded_num > 0:
                 self.postgis.add(tmp_df, self.postgis.key_table)
 
-        tmp_df = self.postgis.read_data(self.postgis.key_tmp_table)
-
-        if len(tmp_df):
-            try:
-                query = f"""
-                    UPDATE {self.postgis.key_table}
-                    SET moddttm = {self.postgis.key_tmp_table}.moddttm,
-                        hash = {self.postgis.key_tmp_table}.hash,
-                        downloaddttm = {self.postgis.key_tmp_table}.downloaddttm
-                    FROM tmp_table
-                    WHERE {self.postgis.key_table}.uid = {self.postgis.key_tmp_table}.uid;
-                """
-                count_key += self.postgis.update_data(query)
-                self.logger.info(f'Update {count_key} data into key table')
-                self.postgis.drop_table(self.postgis.key_tmp_table)
-            
-            except Exception as e:
-                self.logger.error(f'[Update tmp_df] {e} {tmp_df}')
+        
 
     def add_history(self):
         df = df.df[df.df['upload'] == False]
@@ -172,18 +188,7 @@ class PBSCrawler(webCrawler):
         self.postgis.add(df, self.postgis.history_table)
    
     
-    def get_key_df(self, df):
-        df = df[["uid", "hash", "datetime", "moddttm", "downloaddttm"]]
-
-        tmp_df = {
-            "uid": df.iloc[0]["uid"],
-            "datetime" : df.iloc[0]["datetime"],
-            "moddttm": [df["moddttm"].drop_duplicates().tolist()],
-            "hash": [df["hash"].drop_duplicates().tolist()],
-            "downloaddttm": df.iloc[0]["downloaddttm"]
-        }
-
-        return pd.DataFrame(tmp_df)
+    
         
     
 class NewsCrawler(webCrawler):
