@@ -23,6 +23,9 @@ class postgis_handler():
         self.key_table = key_table
         self.key_tmp_table = key_table + "_tmp"
 
+    def add(self, df, table):
+        self.db.append_data(df, table)
+
 
 class webCrawler():
 
@@ -134,12 +137,14 @@ class PBSCrawler(webCrawler):
             uploaded_num = sum(gp['upload'] == True)
             non_uploaded_num = sum(gp['upload'] == False)
 
+            tmp_df = self.get_key_df(gp)
+
             if all_num == non_uploaded_num:
-                self.add_key(df=gp)
+                self.postgis.add(tmp_df, self.postgis.key_table)
                 count_key += 1
 
             elif uploaded_num >= 1 and non_uploaded_num > 0:
-                self.update_key(df=gp)
+                self.postgis.add(tmp_df, self.postgis.key_table)
 
         tmp_df = self.postgis.read_data(self.postgis.key_tmp_table)
 
@@ -165,26 +170,10 @@ class PBSCrawler(webCrawler):
         df = df.drop(columns=['upload'])
         
         self.postgis.add(df, self.postgis.history_table)
-
-    def add_key(self):
-        df = self.df[["uid", "hash", "datetime", "moddttm", "downloaddttm"]]
-        
-        tmp_df = {
-            "uid": df.iloc[0]["uid"],
-            "datetime" : df.iloc[0]["datetime"],
-            "moddttm": [df["moddttm"].drop_duplicates().tolist()],
-            "hash": [df["hash"].drop_duplicates().tolist()],
-            "downloaddttm": df.iloc[0]["downloaddttm"]
-        }
-                
-        try:
-            self.postgis.add(pd.DataFrame(tmp_df), self.postgis.key_table)
-
-        except Exception as e:
-            self.logger.error(f"[add_key] {e} {tmp_df}")    
+   
     
-    def update_key(self, df1, df2):
-        df = self.df[["uid", "hash", "datetime", "moddttm", "downloaddttm"]]
+    def get_key_df(self, df):
+        df = df[["uid", "hash", "datetime", "moddttm", "downloaddttm"]]
 
         tmp_df = {
             "uid": df.iloc[0]["uid"],
@@ -194,11 +183,7 @@ class PBSCrawler(webCrawler):
             "downloaddttm": df.iloc[0]["downloaddttm"]
         }
 
-        try:
-            self.postgis.add(pd.DataFrame(tmp_df), self.postgis.key_tmp_table)
-
-        except Exception as e:
-            self.logger.error(f"[update_key] {e} {tmp_df}")
+        return pd.DataFrame(tmp_df)
         
     
 class NewsCrawler(webCrawler):
